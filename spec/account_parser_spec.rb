@@ -1,5 +1,5 @@
 require_relative '../src/account_parser'
-require_relative '../src/numbers'
+require_relative '../lib/numbers'
 
 describe AccountParser do
   include Numbers
