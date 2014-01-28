@@ -5,12 +5,12 @@ class NumberSegment
     @segment = []
     num_part.each do |x|
       case x
-        when ' '
-          @segment << nil
         when '_'
           @segment << 0
         when '|'
           @segment << 1
+        else
+          @segment << nil
       end
     end
   end
