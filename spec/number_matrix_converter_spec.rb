@@ -8,12 +8,12 @@ describe NumberMatrixConverter do
     NumberMatrixConverter.any_instance.stub(:valid?).and_return(true)
     matrix = [
         [
-            [[nil, 0, nil], [1, nil, 1], [1, 0, 1], [nil, nil, nil]],
-            [[nil, 0, nil], [1, nil, 1], [1, 0, 1], [nil, nil, nil]]
+            Numbers::ZERO,
+            Numbers::ZERO
         ],
         [
-            [[nil, nil, nil], [nil, nil, 1], [nil, nil, 1], [nil, nil, nil]],
-            [[nil, nil, nil], [nil, nil, 1], [nil, nil, 1], [nil, nil, nil]]
+            Numbers::ONE,
+            Numbers::ONE
         ]
     ]
 
@@ -25,22 +25,22 @@ describe NumberMatrixConverter do
     expect(converter.valid?('345882865')).to be
   end
 
-  it 'replaces numbers that do not match with ?' do
+  it 'replaces numbers that do not match with ? and appends ILL' do
     matrix = [
         [
             [[0, 0, 0], [1, nil, 1], [1, 0, 1], [nil, nil, nil]],
-            [[nil, 0, nil], [1, nil, 1], [1, 0, 1], [nil, nil, nil]]
+            Numbers::ZERO
         ]
     ]
 
     NumberMatrixConverter.new(matrix).convert.should == ['?0 ILL']
   end
 
-  it 'replaces numbers that do not match with ?' do
+  it 'replaces numbers that do not pass checksum and appends ERR' do
     matrix = [
         [
-            [[nil, nil, nil], [nil, nil, 1], [nil, nil, 1], [nil, nil, nil]],
-            [[nil, nil, nil], [nil, nil, 1], [nil, nil, 1], [nil, nil, nil]]
+            Numbers::ONE,
+            Numbers::ONE
         ]
     ]
 
