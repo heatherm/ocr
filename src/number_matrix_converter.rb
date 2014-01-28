@@ -31,8 +31,19 @@ class NumberMatrixConverter
           account_number +='9'
         end
       end
-      account_numbers << account_number
+      account_numbers << account_number if valid? account_number
     end
     account_numbers
+  end
+
+  def valid?(account_number)
+    i = 1
+    numbers = []
+    account_number.chars.map(&:to_i).reverse.each do |number|
+      number += i
+      numbers << number
+      i+=1
+    end
+    numbers.inject(:*) % 11 == 0
   end
 end

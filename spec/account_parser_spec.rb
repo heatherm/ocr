@@ -5,6 +5,8 @@ describe AccountParser do
   include Numbers
 
   it 'parses multiple account numbers' do
+    NumberMatrixConverter.any_instance.stub(:valid?).and_return(true)
+
     all_zeros = " _  _  _  _  _  _  _  _  _ \n| || || || || || || || || |\n|_||_||_||_||_||_||_||_||_|\n                           \n"
     all_ones = "                           \n  |  |  |  |  |  |  |  |  |\n  |  |  |  |  |  |  |  |  |\n                           \n"
     entry = AccountParser.parse(StringIO.new(all_zeros+all_ones))
