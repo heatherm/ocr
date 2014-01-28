@@ -2,4 +2,4 @@
 
 require_relative './src/scanner'
 
-puts Scanner.new(STDIN).to_s
+Scanner.new(STDIN)
