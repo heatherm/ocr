@@ -24,4 +24,27 @@ describe NumberMatrixConverter do
     converter = NumberMatrixConverter.new([])
     expect(converter.valid?('345882865')).to be
   end
+
+  it 'replaces numbers that do not match with ?' do
+    matrix = [
+        [
+            [[0, 0, 0], [1, nil, 1], [1, 0, 1], [nil, nil, nil]],
+            [[nil, 0, nil], [1, nil, 1], [1, 0, 1], [nil, nil, nil]]
+        ]
+    ]
+
+    NumberMatrixConverter.new(matrix).convert.should == ['?0 ILL']
+  end
+
+  it 'replaces numbers that do not match with ?' do
+    matrix = [
+        [
+            [[nil, nil, nil], [nil, nil, 1], [nil, nil, 1], [nil, nil, nil]],
+            [[nil, nil, nil], [nil, nil, 1], [nil, nil, 1], [nil, nil, nil]]
+        ]
+    ]
+
+    NumberMatrixConverter.new(matrix).convert.should == ['11 ERR']
+  end
+
 end

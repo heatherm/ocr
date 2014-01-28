@@ -29,9 +29,17 @@ class NumberMatrixConverter
           account_number +='8'
         elsif number.eql?(Numbers::NINE)
           account_number +='9'
+        else
+          account_number +='?'
         end
       end
-      account_numbers << account_number if valid? account_number
+       if valid? account_number
+         account_numbers << account_number
+       elsif account_number.match(/\?/)
+         account_numbers << account_number + ' ILL'
+       else
+         account_numbers << account_number + ' ERR'
+       end
     end
     account_numbers
   end
