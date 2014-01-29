@@ -5,7 +5,7 @@ describe AccountParser do
   include Numbers
 
   it 'parses multiple account numbers' do
-    NumberMatrixConverter.any_instance.stub(:valid?).and_return(true)
+    StringConverter.any_instance.stub(:valid?).and_return(true)
 
     all_zeros =
         " _  _  _  _  _  _  _  _  _ \n"+

@@ -3,21 +3,7 @@ require_relative '../lib/numbers'
 class Digit
 
   def initialize(number)
-    string = ''
-    number.each do |slice|
-      slice.each do |num|
-        case num
-          when 0
-            string += '_'
-          when 1
-            string += '|'
-          else
-            string += ' '
-        end
-      end
-    end
-
-    @distances = Numbers::STRING_TO_SCANNED.values.map { |v| levenshtein_distance(v, string) }
+    @distances = Numbers::STRING_TO_SCANNED.values.map { |v| levenshtein_distance(v, number) }
   end
 
   def best_matches
