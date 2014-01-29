@@ -46,44 +46,66 @@ describe NumberMatrixConverter do
   end
 
   context 'when a number does not pass checksum' do
-    it 'finds alternatives for numbers that do not pass checksum and appends' do
-      matrix = [
-          [
-              Numbers::TWO,
-              Numbers::ZERO,
-              Numbers::ZERO,
-              Numbers::ZERO,
-              Numbers::ZERO,
-              Numbers::ZERO,
-              Numbers::ZERO,
-              Numbers::ZERO,
-              Numbers::ZERO
-          ]
-      ]
-
-      NumberMatrixConverter.new(matrix).convert.should == ['200800000']
-    end
-
-    context 'when there are multiple alternatives' do
-      it 'finds all possibilities' do
+    context 'when it can find an alternative' do
+      it 'finds alternatives for numbers that do not pass checksum and appends' do
         matrix = [
             [
-                Numbers::FIVE,
-                Numbers::FIVE,
-                Numbers::FIVE,
-                Numbers::FIVE,
-                Numbers::FIVE,
-                Numbers::FIVE,
-                Numbers::FIVE,
-                Numbers::FIVE,
-                Numbers::FIVE,
+                Numbers::TWO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO
             ]
         ]
-        actual = NumberMatrixConverter.new(matrix).convert.first
-        actual.length.should == 40
-        actual.should match(/555555555 AMB/)
-        actual.should match(/555655555/)
-        actual.should match(/559555555/)
+
+        NumberMatrixConverter.new(matrix).convert.should == ['200800000']
+      end
+
+      context 'when there are multiple alternatives' do
+        it 'finds all possibilities' do
+          matrix = [
+              [
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+                  Numbers::FIVE,
+              ]
+          ]
+          actual = NumberMatrixConverter.new(matrix).convert.first
+          actual.length.should == 40
+          actual.should match(/555555555 AMB/)
+          actual.should match(/555655555/)
+          actual.should match(/559555555/)
+        end
+      end
+    end
+
+    context 'when it cannot find an alternative' do
+      it 'finds alternatives for numbers that do not pass checksum and appends' do
+        matrix = [
+            [
+                Numbers::TWO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::SEVEN,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO
+            ]
+        ]
+
+        NumberMatrixConverter.new(matrix).convert.should == ['200700000 ILL']
       end
     end
   end
