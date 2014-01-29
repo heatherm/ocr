@@ -10,7 +10,7 @@ class NumberSegment
         when '|'
           @segment << 1
         else
-          @segment << nil
+          @segment << 3
       end
     end
   end

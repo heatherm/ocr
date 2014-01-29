@@ -37,7 +37,7 @@ describe NumberMatrixConverter do
   it 'replaces numbers that do not match with ? and appends ILL' do
     matrix = [
         [
-            [[0, 0, 0], [1, nil, 1], [1, 0, 1], [nil, nil, nil]],
+            [[0, 0, 0], [1, 3, 1], [1, 0, 1], [3, 3, 3]],
             Numbers::ZERO
         ]
     ]
