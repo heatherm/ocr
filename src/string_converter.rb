@@ -10,7 +10,10 @@ class StringConverter
   def convert
     transposed_accounts = transpose_accounts
     accounts_as_number_strings = segment_by_numbers(transposed_accounts)
+    find_best_match_for_string(accounts_as_number_strings)
+  end
 
+  def find_best_match_for_string(accounts_as_number_strings)
     account_numbers = []
     accounts_as_number_strings.each do |account|
       @has_many_options_for_one_character = false
