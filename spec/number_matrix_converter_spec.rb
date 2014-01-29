@@ -45,6 +45,58 @@ describe NumberMatrixConverter do
     NumberMatrixConverter.new(matrix).convert.should == ['?0 ILL']
   end
 
+  context 'when multiple matches are found as alternatives for a non-number' do
+    context 'when it can find a number one move away' do
+      it 'uses that number instead' do
+       # _     _  _  _  _  _  _
+       #| || || || || || || ||_   |
+       #|_||_||_||_||_||_||_| _|  |
+       #
+       #=> 000000051
+        matrix = [
+            [
+                Numbers::ZERO,
+                [[3,3,3],[1,3,1],[1,0,1],[3,3,3]],
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::ZERO,
+                Numbers::FIVE,
+                Numbers::ONE
+            ]
+        ]
+
+        NumberMatrixConverter.new(matrix).convert.should == ['000000051']
+      end
+    end
+    context 'when it can find many numbers one move away' do
+      it 'uses the one that passes checksum' do
+    #    _  _  _  _  _  _     _
+    #|_||_|| ||_||_   |  |  | _
+    #  | _||_||_||_|  |  |  | _|
+    #
+    #=> 490867715
+        matrix = [
+            [
+                Numbers::FOUR,
+                Numbers::NINE,
+                Numbers::ZERO,
+                Numbers::EIGHT,
+                Numbers::SIX,
+                Numbers::SEVEN,
+                Numbers::SEVEN,
+                Numbers::ONE,
+                [[3,0,3],[3,0,3],[3,0,1],[3,3,3]]
+            ]
+        ]
+
+        NumberMatrixConverter.new(matrix).convert.should == ['490867715']
+      end
+    end
+
+  end
+
   context 'when a number does not pass checksum' do
     context 'when it can find an alternative' do
       it 'finds alternatives for numbers that do not pass checksum and appends' do
