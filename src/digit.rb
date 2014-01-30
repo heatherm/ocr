@@ -1,14 +1,24 @@
 require_relative '../lib/numbers'
 
 class Digit
+  attr_reader :scanned_digit
 
-  def initialize(number)
-    @distances = Numbers::STRING_TO_SCANNED.values.map { |v| levenshtein_distance(v, number) }
+  def initialize(scanned_digit)
+    @scanned_digit = scanned_digit
   end
 
-  def best_matches
+  def one_move_away
+    calculate_distances
     @distances.each_index.select { |i| @distances[i] == 1 }
   end
+
+  private
+
+  def calculate_distances
+    @distances = Numbers::STRING_TO_SCANNED.values
+    .map { |v| levenshtein_distance(v, scanned_digit) }
+  end
+
 
   def levenshtein_distance(s, t)
     m = s.length

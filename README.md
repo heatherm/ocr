@@ -1,7 +1,9 @@
-Run
+## Run
+This assumes use of RVM
 
-`./scanner.rb < sample-input.txt`
+`bundle && ./scanner.rb < sample-input.txt`
 
-Test
+Prints results to output.txt
 
+## Tests
 `rspec`
