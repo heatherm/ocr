@@ -2,15 +2,106 @@ require_relative '../src/string_converter'
 require_relative '../lib/numbers'
 
 describe StringConverter do
+  let(:account_numbers) {
+    [
+        [
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxx\n",
+            "  |  |  |  |  |  |  |  |  |\n",
+            "  |  |  |  |  |  |  |  |  |\n",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxx\n"
+        ],
+        [
+            " _  _  _  _  _  _  _  _  _x\n",
+            "  |  |  |  |  |  |  |  |  |\n",
+            "  |  |  |  |  |  |  |  |  |\n",
+            "xxxxxxxxxxxxxxxxxxxxxxxxxxx\n"
+        ]
+    ]
+  }
+
+  let(:transposed_accounts) {
+    [
+        [
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            ["x", " ", " ", "x"],
+            ["x", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            []
+        ], [
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            [" ", "|", "|", "x"],
+            [" ", " ", " ", "x"],
+            ["_", " ", " ", "x"],
+            ["x", "|", "|", "x"],
+            []]
+    ]
+  }
+
+  let(:accounts_as_number_strings){
+    [
+        [
+            "   "+
+            "  |"+
+            "  |"+
+            "   ", "     |  |   ", "     |  |   ", "     |  |   ", "     |  |   ", "     |  |   ", "     |  |   ", "     |  |   ", "     |  |   ", ""],
+        [" _   |  |   ", " _   |  |   ", " _   |  |   ", " _   |  |   ", " _   |  |   ", " _   |  |   ", " _   |  |   ", " _   |  |   ", " _   |  |   ", ""]
+    ]
+  }
+
   context 'valid_checksum?' do
-    let(:converter) { StringConverter.new([]) }
+    let(:possibilties) { Possibilities.new([]) }
 
     it 'validates good account numbers' do
-      expect(converter.valid_checksum?('345882865')).to be
+      expect(possibilties.valid_checksum?('345882865')).to be
     end
 
     it 'invalidates bad account numbers' do
-      expect(converter.valid_checksum?('555555555')).not_to be
+      expect(possibilties.valid_checksum?('555555555')).not_to be
     end
   end
 
