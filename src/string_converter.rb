@@ -4,8 +4,7 @@ require_relative '../lib/numbers'
 class StringConverter
   attr_reader :account_numbers,
               :transposed_accounts,
-              :accounts_as_number_strings,
-              :many_matches
+              :accounts_as_number_strings
 
   def initialize(account_numbers)
     @account_numbers = account_numbers
@@ -18,18 +17,13 @@ class StringConverter
   end
 
   def find_best_match_for_strings
-    account_numbers = []
-    accounts_as_number_strings.each do |account|
-
-      possibilities = Possibilities.new(account)
-      possibilities.create_number_hash
-      if possibilities.many_matches?
-        account_numbers << possibilities.best_match
-      else
-        account_numbers << possibilities.other_match
+    [].tap do |results|
+      accounts_as_number_strings.each do |account|
+        possibilities = Possibilities.new(account)
+        possibilities.create_number_hash
+        results << possibilities.best_match
       end
     end
-    account_numbers
   end
 
   def segment_by_numbers
@@ -58,7 +52,7 @@ class StringConverter
 end
 
 class Possibilities
-  def initialize account_number
+  def initialize(account_number)
     @account_number = account_number
   end
 
@@ -88,36 +82,38 @@ class Possibilities
   end
 
   def best_match
-    account_number = create_number_hash
-    possibilities = []
-    cartesian_product = account_number.values.inject(&:product).map(&:flatten)
-    cartesian_product.each do |possible_account|
-      account_string = possible_account.join
-      possibilities << account_string if valid_checksum?(account_string)
-    end
+    if many_matches?
+      account_number = create_number_hash
+      possibilities = []
+      cartesian_product = account_number.values.inject(&:product).map(&:flatten)
+      cartesian_product.each do |possible_account|
+        account_string = possible_account.join
+        possibilities << account_string if valid_checksum?(account_string)
+      end
 
-    account_string = stringify_hash(account_number)
-    if possibilities.length == 1
-      possibilities.first
-    elsif possibilities.length > 1
-      account_string + " AMB #{possibilities}"
+      account_string = stringify_hash(account_number)
+      if possibilities.length == 1
+        possibilities.first
+      elsif possibilities.length > 1
+        account_string + " AMB #{possibilities}"
+      else
+        account_string + " ILL"
+      end
     else
-      account_string + " ILL"
+      account_number = stringify_hash(create_number_hash)
+      if account_number.match(/\?/)
+        account_number + ' ILL'
+      elsif valid_checksum?(account_number)
+        account_number
+      else
+        find_similar_number(account_number)
+      end
     end
   end
 
-  def other_match
-    account_number = stringify_hash(create_number_hash)
-    if account_number.match(/\?/)
-      account_number + ' ILL'
-    elsif valid_checksum?(account_number)
-      account_number
-    else
-      find_similar_number(account_number)
-    end
-  end
 
-  def find_similar_number account_number
+
+  def find_similar_number(account_number)
     result = [].tap do |possibilities|
       account_number.chars.each_with_index do |num, position|
         Numbers::ALTERNATIVES_TRUTH_TABLE[num].each do |alternative|
